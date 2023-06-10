@@ -1,0 +1,102 @@
+:root {
+    --primary: red;
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    max-width: 1440px;
+    margin: auto;
+    text-align: center;
+    background: lightblue;
+}
+
+header nav {
+    padding: 1em;
+
+}
+
+header nav ul {
+    list-style: none;
+    display: inline-flex;
+    justify-content: space-evenly;
+    width: 100%;
+    padding: 0;
+}
+
+header nav a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    padding: .5em
+}
+
+header nav a:hover {
+    color: grey;
+}
+
+main {
+}
+
+main section {
+    display: flex;
+    width: 80%;
+    margin: auto;
+    align-items: center
+}
+
+main ul {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+main ul li {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 10em;
+    justify-content: space-evenly;
+}
+
+.leftside {
+    flex-direction: row;
+}
+
+.rightside {
+    flex-direction: row-reverse;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+
+footer {
+    background: lightgray;
+}
+footer ul {
+    list-style: none;
+    display: inline-flex;
+    justify-content: space-evenly;
+    width: 100%;
+    padding: 0;
+}
+
+footer a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    padding: .5em
+}
+
+footer a:hover {
+    color: grey;
+}
