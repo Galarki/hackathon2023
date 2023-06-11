@@ -1,0 +1,55 @@
+#include "SevSeg.h"
+SevSeg sevseg; 
+
+int ledPin1 = 13;
+int potPin = A0;
+int randomNumber = 5;
+
+void setup() {
+  pinMode(ledPin1, OUTPUT);
+  Serial.begin(9600);
+  byte numDigits = 1;
+  byte digitPins[] = {};
+  byte segmentPins[] = {9, 8, 5, 6, 7, 10, 11};
+  bool resistorsOnSegments = true;
+  byte hardwareConfig = COMMON_CATHODE;
+  bool updateWithDisplays = false;
+  bool leadingZeros;
+  bool disableDecPoint = true;
+  sevseg.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments);
+  sevseg.setBrightness(20);
+  Serial.println(randomNumber);
+}
+
+void loop() {
+  int potValue = analogRead(potPin);
+  int potValueRe = potValue / 113;
+ //int randomNumber = random(1, 11);
+  /*  for(int i = 0; i < 10; i++){
+        sevseg.setNumber(i, i%2);
+        delay(1000);
+        sevseg.refreshDisplay(); 
+        } 
+*/
+  sevseg.setNumber(potValueRe);
+  sevseg.refreshDisplay();
+
+
+  Serial.println(potValueRe);
+
+  if (potValueRe == randomNumber) {
+    flashLED();
+  }
+  /*if (potValueRe == 10) {
+    sevseg.blank();
+  }*/
+}
+
+void flashLED() {
+  for (int i = 0; i < 3; i++) {
+    digitalWrite(ledPin1, HIGH); 
+    delay(200);  // 200ms ON
+    digitalWrite(ledPin1, LOW); 
+    delay(200);  // 200ms OFF
+  }
+}

@@ -11,12 +11,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="../img/icon.png">
 </head>
 <body>
 <header>
     <nav>
         <ul>
-            <li><a href="#">Home</a></li>
+            <li><a href="..">Home</a></li>
             <li><a href="/kamers">Kamers</a></li>
             <li><a href="/overons">Over ons</a></li>
         </ul>
@@ -26,74 +27,111 @@
     <section>
         <ul>
             <li>
-                <div>
-                    <h2>Defuse the bomb</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci culpa, cupiditate dolore
-                        doloremque et fuga inventore ipsum magnam maxime minus natus necessitatibus nisi nostrum odit
-                        quia, quisquam similique sit, voluptates?
-                    </p>
-                </div>
-                <div>
-                    <img src="../img/defusethebombArduino.png" alt="">
-                    <img src="../img/defusethebombArduino.png" alt="">
-                </div>
-            </li>
-            <li>
-                <div>
-                    <h2>Loaded dice</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci culpa, cupiditate dolore
-                        doloremque et fuga inventore ipsum magnam maxime minus natus necessitatibus nisi nostrum odit
-                        quia, quisquam similique sit, voluptates?
-                    </p>
-                </div>
+                <div class="container">
+                    <h2 class="header">Defuse the alarm</h2>
+                    <p class="text">
+                        Er wordt gebruikt gemaakt van een bluetooth app die verbindt met een bluetooth module die aan de
+                        arduino is aangesloten. Hiervoor hebben we een blockcode voorgebruikt die ervoor zorgt dat de
+                        ingegeven waarde op de GSM naar de module verstuurd wordt. De RX van de bluetoothmodule werkt op
+                        3.3V waarvoor we een spanningsdeler gebruiken. Deze bestaat uit een weerstand van 2KΩ en 1KΩ.
+                        Het matrix-display is lichtjes aangepast waardoor we een USB aansluiting hebben wat het werken
+                        hiermee vergemakkelijkt.
+                        <br>
+                        <a href="../code/defuseTheAlarm.txt" target="_blank">Zie de code.</a>
 
-                <div>
-                    <img src="../img/defusethebombArduino.png" alt="">
-                    <img src="../img/defusethebombArduino.png" alt="">
-                </div>
-            </li>
-            <li>
-                <div>
-                    <h2>Higher lower</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci culpa, cupiditate dolore
-                        doloremque et fuga inventore ipsum magnam maxime minus natus necessitatibus nisi nostrum odit
-                        quia, quisquam similique sit, voluptates?
                     </p>
-                </div>
-                <div>
-                    <img src="../img/defusethebombArduino.png" alt="">
-                    <img src="../img/defusethebombArduino.png" alt="">
-                </div>
-            </li>
-            <li>
-                <div>
-                    <h2>Wheel of fortune</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci culpa, cupiditate dolore
-                        doloremque et fuga inventore ipsum magnam maxime minus natus necessitatibus nisi nostrum odit
-                        quia, quisquam similique sit, voluptates?
-                    </p>
-                </div>
-                <div>
-                    <img src="../img/defusethebombArduino.png" alt="">
-                    <img src="../img/defusethebombArduino.png" alt="">
-                </div>
-            </li>
-            <li>
-                <div>
-                    <h2>Guess the code</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci culpa, cupiditate dolore
-                        doloremque et fuga inventore ipsum magnam maxime minus natus necessitatibus nisi nostrum odit
-                        quia, quisquam similique sit, voluptates?
-                    </p>
-                </div>
 
-                <img src="../img/guessthecodeARDUINO.png" alt="">
-                <img src="" alt="">
+                    <img class="img" src="../img/defusethebombArduino.png" alt="">
+                    <img class="img" src="../img/bluetoothApp.png" alt="schema display & arduino">
+                    <img class="img" src="../img/bluetoothACode.png" alt="schema display & arduino">
+                </div>
+            </li>
+            <li>
+                <div class="container">
+                    <h2 class="header">Loaded dice</h2>
+                    <p class="text">
+                        We gebruiken custom-made dobbelstenen die we hebben ge 3D-print. In deze dobbelstenen zit een
+                        giwchtje en in sommige zit ook een magneet. Deze magneet activeert de halsensor die in de doos
+                        zit.
+                        Als je het goed hebt begint een LED-lampje te branden, hiervoor hebben we een
+                        voorschakelweerstand van 220Ω gebruikt.
+                        <br>
+
+                        <a href="../code/loadedDice.txt" target="_blank">Zie de code.</a>
+
+                    </p>
+
+                    <img class="img" src="../img/loadedDiceARDUINO.png" alt="schema loaded dice & arduino">
+                    <img class="img" src="../img/loadedDiceDice.png" alt="">
+                </div>
+            </li>
+            <li>
+                <div class="container">
+                    <h2 class="header">Higher lower</h2>
+                    <p class="text">We maken gebruik van een potentiometer waar van we de waarde omzetten van 0 tot 9.
+                        Als de gebruiken op het juiste nummer zit gaat een LED branden waar een vooschakelweerstand van
+                        220Ω op zit.
+                        De waarde van de potentiometer wordt weergegeven op een 7-Segment Display. Voor elke LED-segment
+                        staat een voorschakelweerstand van 220Ω.
+                        <br>
+
+                        <a href="../code/higherLower.txt" target="_blank">Zie de code.</a>
+
+                    </p>
+                    <img class="img" src="../img/higherLowerARDUINO.png" alt="schema higher lower & arduino">
+                    <img class="img" src="../img/.png" alt="">
+                    <img class="img" src="../img/.png" alt="">
+
+                </div>
+            </li>
+            <li>
+                <div class="container">
+                    <h2 class="header">Wheel of fortune</h2>
+                    <p class="text">
+                        Ik heb hier voor 1 weerstand van 10000 ohm , 1 drukknop , een led ring en een arduino uno.
+                        De weerstand staat in serie met een weerstand van 10 000 ohm omdat, er anders kortsluiting is.
+                        Hij is aan gesloten op pin 2. De led ring is aan gesloten op pin 6.
+                        <br>
+
+                        <a href="../code/wheelOfFortune.txt" target="_blank">Zie de code.</a>
+
+
+                    </p>
+                    <img class="img" src="../img/wheelOfFortuneARDUINO.png" alt="">
+                </div>
+            </li>
+
+            <li>
+                <div class="container">
+                    <h2 class="header">Guess the code</h2>
+                    <p class="text">Bij random code zal er telkens het spel start een 4 random cijferige code worden
+                        gegenereerd. Het is de bedoeling dat je die met een afstandsbediening ingeeft. De IR-receiver
+                        zal deze code ontvangen, het programma gaat dan kijken of de ingegeven code juist is. Als de
+                        ingegeven code juist is zal er een groene LED branden. Indien je een fout cijfer hebt ingegeven
+                        zal er niks branden. Dit is allemaal mogelijk gemaakt door een Arduino mega, een groene LED, IR
+                        receiver en een afstandsbediening. In de box is er zelf een klein test printje gemaakt met alle
+                        weerstanden, GND’s en VCC’s op.
+                        <br>
+
+                        <a href="../code/guessTheCode.txt" target="_blank">Zie de code.</a>
+
+                    </p>
+                    <img class="img" src="../img/guessthecodeARDUINO.png" alt="">
+
+                </div>
             </li>
         </ul>
     </section>
 </main>
-<footer></footer>
+<footer>
+
+        <ul>
+            <li><a href="">Facebook</a></li>
+            <li><a href="">Instagram</a></li>
+            <li><a href="">Twitter</a></li>
+        </ul>
+
+</footer>
 
 </body>
 </html>

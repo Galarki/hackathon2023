@@ -1,0 +1,285 @@
+#include <RGBmatrixPanel.h>
+
+
+#define CLK  8  
+#define OE   9
+#define LAT A3
+#define A   A0
+#define B   A1
+#define C   A2
+
+#define COMPLETED A4
+#define HIGHVOLTAGE A5
+
+RGBmatrixPanel matrix(A, B, C, CLK, LAT, OE, false);
+
+void setup() {
+    Serial.begin(38400);
+    matrix.begin();
+
+    pinMode(A5, OUTPUT);
+    pinMode(COMPLETED, OUTPUT);
+
+    
+    analogWrite(HIGHVOLTAGE, 255);
+
+    pinMode(12, INPUT);
+    pinMode(11, INPUT);
+    pinMode(10, INPUT);
+    randomSeed(analogRead(4));
+
+
+}
+
+int vorigeOpdracht;
+int opdracht = random(10);
+ 
+bool knop1 = false;
+bool knop2 = false;
+bool knop3 = false;
+bool knop4 = false;
+
+bool defused = false;
+
+bool reset = false;
+
+bool blockLoop = true;
+int voorlopigGetal;
+int onthoudenGetal;
+int getal;
+
+
+char code[4];
+
+int finalCode;
+int punten = 0;
+bool newPuzzle = true;
+
+void loop() {
+  while(!reset){
+  while(punten < 4){ 
+    if (opdracht <= 1 && newPuzzle){                          //easy
+    matrix.fillRect(0, 0, 8, 16, matrix.Color333(0, 1, 0));  
+    // full een rechthoek in van stat coordinate 0,0 tot eind coordinate 8,16
+    //met de RGB waarde groen
+    matrix.fillRect(8, 0, 16, 16, matrix.Color333(1, 0, 0));
+    matrix.fillRect(16, 0, 24, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(24, 0, 32, 16, matrix.Color333(0, 0, 1));
+    newPuzzle = false; 
+    // zorgt ervoor dat er geen nieuwe puzzel wordt gegenereerd
+    }else if (opdracht == 2 && newPuzzle){
+    matrix.fillRect(0, 0, 8, 16, matrix.Color333(0, 0, 0));
+    matrix.fillRect(8, 0, 16, 16, matrix.Color333(1, 0, 0));
+    matrix.fillRect(16, 0, 24, 16, matrix.Color333(0, 0, 0));
+    matrix.fillRect(24, 0, 32, 16, matrix.Color333(0, 0, 1));
+    newPuzzle = false;
+    }else if (opdracht  == 3 && newPuzzle){
+    matrix.fillRect(0, 0, 8, 16, matrix.Color333(0, 0, 0));
+    matrix.fillRect(8, 0, 24, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(24, 0, 32, 16, matrix.Color333(0, 0, 0));
+    newPuzzle = false;
+    }else if (opdracht == 4 && newPuzzle){
+    matrix.fillRect(0, 0, 16, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(16, 0, 32, 16, matrix.Color333(0, 0, 1));
+    newPuzzle = false;
+    }else if (opdracht == 5 && newPuzzle){                    //medium
+    matrix.fillRect(0, 0, 8, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(8, 0, 16, 16, matrix.Color333(1, 0, 0));
+    matrix.fillRect(16, 0, 24, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(24, 0, 32, 16, matrix.Color333(0, 0, 1));
+    matrix.drawRect(0, 0, 32, 16, matrix.Color333(0, 1, 0));
+    newPuzzle = false;
+    }else if (opdracht == 6 && newPuzzle){                    
+    matrix.fillRect(0, 0, 8, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(8, 0, 16, 16, matrix.Color333(0, 0, 1));
+    matrix.fillRect(16, 0, 24, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(24, 0, 32, 16, matrix.Color333(0, 0, 1));
+    matrix.drawRect(0, 0, 32, 16, matrix.Color333(0, 1, 0));
+    newPuzzle = false;
+    }else if (opdracht == 7 && newPuzzle){                    
+    matrix.fillRect(0, 0, 8, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(8, 0, 16, 16, matrix.Color333(1, 0, 0));
+    matrix.fillRect(16, 0, 24, 16, matrix.Color333(0, 0, 1));
+    matrix.fillRect(24, 0, 32, 16, matrix.Color333(1, 0, 0));
+    matrix.drawRect(0, 0, 32, 16, matrix.Color333(0, 1, 0));
+    newPuzzle = false;
+    }else if (opdracht == 8 && newPuzzle){                    
+    matrix.fillRect(0, 0, 8, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(8, 0, 16, 16, matrix.Color333(1, 0, 0));
+    matrix.fillRect(16, 0, 24, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(24, 0, 32, 16, matrix.Color333(0, 0, 1));
+    matrix.drawRect(0, 0, 32, 16, matrix.Color333(1, 0, 0));
+    newPuzzle = false;
+    }else if (opdracht == 9 && newPuzzle){                    
+    matrix.fillRect(0, 0, 6, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(6, 0, 12, 16, matrix.Color333(1, 0, 0));
+    matrix.fillRect(12, 0, 18, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(18, 0, 24, 16, matrix.Color333(0, 0, 1));
+    matrix.fillRect(24, 0, 32, 16, matrix.Color333(1, 0, 0));
+    matrix.drawRect(0, 0, 32, 16, matrix.Color333(1, 0, 0));
+    matrix.drawRect(1, 1, 31, 15, matrix.Color333(0, 1, 0));
+    newPuzzle = false;
+    }else if (opdracht >= 10 && newPuzzle){                    
+    matrix.fillRect(0, 0, 6, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(6, 0, 12, 16, matrix.Color333(0, 0, 1));
+    matrix.fillRect(12, 0, 18, 16, matrix.Color333(0, 1, 0));
+    matrix.fillRect(18, 0, 24, 16, matrix.Color333(0, 0, 1));
+    matrix.fillRect(24, 0, 32, 16, matrix.Color333(1, 0, 0));
+    matrix.drawRect(0, 0, 32, 16, matrix.Color333(1, 0, 0));
+    matrix.drawRect(1, 1, 31, 15, matrix.Color333(0, 0, 1));
+    newPuzzle = false;
+    }
+    
+
+
+    knop1 = digitalRead(10); // inlezen van knop
+    knop2 = digitalRead(11);
+    knop3 = digitalRead(12);
+    knop4 = digitalRead(13);
+
+    if (knop1 || knop2 || knop3 || knop4){ // als een knop wordt ingedrukt
+      if (knop1 && opdracht <= 1 || knop2 && opdracht == 2 || knop3 && opdracht == 3 || knop4 && opdracht == 4){
+        matrix.setTextSize(1);
+            matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 1, 0));
+            matrix.setTextColor(matrix.Color333(1,1,1));          
+            delay(500);
+            matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 0, 0));
+            matrix.setTextColor(matrix.Color333(1,1,1));
+            matrix.setCursor(5, 4);
+            matrix.print("EASY");
+            delay(500);
+            matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 1, 0));
+            matrix.setTextColor(matrix.Color333(1,1,1));
+            delay(500);
+            punten++;
+            newPuzzle = true;
+      } else if (knop1 && opdracht == 5 || knop2 && opdracht == 6 || knop3 && opdracht == 7 || knop4 && opdracht == 8) {
+      matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 1, 0));
+            matrix.setTextColor(matrix.Color333(1,1,1));          
+            delay(500);
+            matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 0, 0));
+            matrix.setTextColor(matrix.Color333(1,1,1));
+            matrix.setCursor(5, 4);
+            matrix.print("GOOD");
+            delay(500);
+            matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 1, 0));
+            matrix.setTextColor(matrix.Color333(1,1,1));
+            delay(500);
+            punten++;
+            newPuzzle = true;
+
+     } else if (knop1 && opdracht == 9 || knop2 && opdracht == 10) {
+      matrix.setTextColor(matrix.Color333(1,1,1));          
+            matrix.setTextColor(matrix.Color333(1,1,1));          
+            delay(500);
+            matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 0, 0));
+            matrix.setTextColor(matrix.Color333(1,1,1));
+            matrix.setCursor(5, 4);
+            matrix.print("HARD");
+            delay(500);
+            matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 1, 0));
+            matrix.setTextColor(matrix.Color333(1,1,1));
+            delay(500);
+            punten++;
+            newPuzzle = true;
+      }else {// als er geen enkele juiste cobinatie is doe dan ...
+          matrix.fillRect(0, 0, 32, 16, matrix.Color333(1, 0, 0));
+          delay(500);
+          matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 0, 0));
+          delay(500);
+          matrix.fillRect(0, 0, 32, 16, matrix.Color333(1, 0, 0));
+          delay(500);
+          punten = 0;
+          newPuzzle = true;
+      }
+      vorigeOpdracht = opdracht;
+      while (vorigeOpdracht == opdracht){ // als de opdracht gelijk is aan de vorige
+        opdracht = random(9);
+        opdracht++;
+      }
+    }
+  }
+  if (punten == 4){       
+    knop1 = digitalRead(10);//hardcoded skip voor als ik er niet ben mijn mijn gsm
+    knop4 = digitalRead(13);
+    if  (knop1 && knop4){
+      punten++;
+  }
+ // Serial.println("loop");
+  if(blockLoop){  
+    matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 0, 0));
+    matrix.setCursor(5, 4);
+    voorlopigGetal = random(1000,9999);
+    onthoudenGetal = voorlopigGetal;
+    Serial.println(voorlopigGetal);
+    matrix.setTextSize(1);
+    
+      for (int i = 3; i >= 0; i--) {
+        getal = voorlopigGetal / pow(10, i);
+        voorlopigGetal -= getal * pow(10, i);
+        Serial.println(getal);
+        switch(getal){    //printen van code op matrix
+          case 0: matrix.print("0");break;
+          case 1: matrix.print("1");break;
+          case 2: matrix.print("2");break;
+          case 3: matrix.print("3");break;
+          case 4: matrix.print("4");break;
+          case 5: matrix.print("5");break;
+          case 6: matrix.print("6");break;
+          case 7: matrix.print("7");break;
+          case 8: matrix.print("8");break;
+          case 9: matrix.print("9");break;
+          default: Serial.println("error");break;
+        }
+        
+      }
+      blockLoop = false;
+  }
+    if (Serial.available() > 0){
+      for (int i = 0; i < 4; i++) {
+        code[i] = Serial.read();
+        delay(50);
+        code[i] = code[i] - 48;
+      }
+      finalCode = code[0]*1000 + code[1]*100 + code[2]*10 + code[3];
+      Serial.println("code: " + finalCode);
+      if (onthoudenGetal == finalCode){
+        punten++;
+        Serial.println("COMPLETED");
+      } else{
+        matrix.fillRect(0, 0, 32, 16, matrix.Color333(1, 0, 0));
+        delay(500);
+        matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 0, 0));
+        delay(500);
+        matrix.fillRect(0, 0, 32, 16, matrix.Color333(1, 0, 0));
+        delay(500);
+        punten--;
+        blockLoop = true;
+      }
+    }
+  }
+  if (!defused && punten > 4){ //als er genoeg punten behaald zijn
+    matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 0, 0));
+    matrix.setCursor(1, 0);  // start at top left, coordinate
+    matrix.setTextSize(1);
+    matrix.setTextColor(matrix.Color333(0,1,0));
+    matrix.print("ALARMISWEG");
+    digitalWrite(COMPLETED, HIGH);
+    delay(5000);
+    matrix.fillRect(0, 0, 32, 16, matrix.Color333(0, 1, 0));
+    
+    defused = true;
+  }
+  }
+  while(reset){
+        knop1 = digitalRead(10);
+        if(knop1){
+          reset = false;
+          punten = 0; 
+          opdracht = random(10);
+          digitalWrite(COMPLETED, LOW);
+
+        }
+
+  }
+}

@@ -1,11 +1,66 @@
 div {
-    width: 50%;
+    width: 75%;
 }
-img {
-    width: 50%;
-}
-ul, li{
+
+main li{
     width: 100%;
     margin: auto;
     display: inline-flex;
+    padding: 1em;
+}
+a {
+    margin: auto;
+    font-weight: bold;
+    color: black;
+}
+ul {
+    width: 100%;
+}
+footer {
+    width: 45em;
+    margin: auto;
+    padding: 0;
+    border-radius: 50px 50px 0 0;
+    background: grey;
+}
+footer a {
+    color: whitesmoke;
+    font-weight: revert;
+}
+header a {
+    color: whitesmoke;
+    font-weight: revert;
+}
+footer a:hover{
+    font-weight: bold;
+    font-size: 17px;
+    color: whitesmoke;
+}
+header a:hover{
+    font-weight: bold;
+    font-size: 17px;
+    color: whitesmoke;
+}
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+}
+
+.header {
+    grid-column: 1 / -1;
+    text-align: center;
+    justify-self: center; /* Center horizontally */
+}
+
+.text {
+    grid-column: 1 / -1;
+    text-align: center;
+    align-self: center; /* Center vertically */
+}
+
+.img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
 }

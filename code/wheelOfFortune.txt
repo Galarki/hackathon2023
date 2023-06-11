@@ -1,0 +1,139 @@
+#include <Adafruit_NeoPixel.h>
+
+#define LED_PIN     6
+#define NUM_LEDS    16
+#define BUTTON_PIN  2
+
+Adafruit_NeoPixel leds(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
+int currentLED = 2;  // Start op LED 2
+int previousLED = NUM_LEDS - 1;
+volatile bool buttonPressed = false;
+int level = 1;  // Huidig niveau (1 = Niveau 1, 2 = Niveau 2)
+bool ledOn = false;
+bool greenOn = false;
+bool blueOn = false;
+unsigned long blueStartTime = 0;
+unsigned long blueDuration = 1000;  // Duur van blauwe verlichting
+unsigned long rainbowStartTime = 0;
+unsigned long rainbowDuration = 2000;  // Duur van regenboogkleuren
+unsigned long rotationDelay = 500;  // Vertraging voor rotatiesnelheid
+
+void buttonInterrupt() {
+  buttonPressed = true;
+}
+
+void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(BUTTON_PIN), buttonInterrupt, FALLING);
+  leds.begin();
+  leds.show();
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (buttonPressed) {
+    buttonPressed = false;
+    
+    if (!ledOn && !greenOn && !blueOn) {
+      // Start de sequentie
+      leds.setPixelColor(15, 255, 0, 0);  // Stel LED 16 in op rood
+      leds.setPixelColor(0, 255, 0, 0);  // Stel LED 1 in op rood
+      leds.setPixelColor(1, 255, 0, 0);  // Stel LED 2 in op rood
+      
+      leds.show();
+      delay(1000);  // LED's blijven 1 seconde aan
+      leds.setPixelColor(15, 0);  // Zet LED's uit
+      leds.setPixelColor(0, 0);
+      leds.setPixelColor(1, 0);
+      leds.show();
+      ledOn = true;
+    } else if (ledOn && !greenOn && !blueOn && (currentLED == 0 || currentLED == 1)) {
+      if (level == 1) {
+        // Zet alle LED's op regenboogkleuren en schakel over naar Niveau 2
+        for (int i = 0; i < NUM_LEDS; i++) {
+          int hue = map(i, 0, NUM_LEDS - 1, 0, 255);  // Bepaal kleur op basis van LED-index
+          leds.setPixelColor(i, Wheel(hue));  // Stel LED-kleur in op regenboogkleur
+        }
+        leds.show();
+        delay(1000);  // LED's blijven 1 seconde aan in regenboogkleuren
+        for (int i = 0; i < NUM_LEDS; i++) {
+          leds.setPixelColor(i, 0);  // Zet LED's uit
+        }
+        leds.show();
+        level = 2;  // Schakel over naar Niveau 2
+        rotationDelay = 250;  // Verlaag rotatiesnelheid naar 250 ms (0,25 seconde)
+      } else if (level == 2) {
+        // Alle LED's branden groen en het programma eindigt
+        for (int i = 0; i < NUM_LEDS; i++) {
+          leds.setPixelColor(i, 0, 255, 0);  // Stel LED-kleur in op groen
+        }
+        leds.show();
+        delay(1000);  // LED's blijven 1 seconde groen
+        return;  // Eindig het programma
+      }
+    } else if (ledOn && !greenOn && !blueOn) {
+      // Zet alle LED's op blauw wanneer de knop wordt ingedrukt tijdens het draaien
+      blueOn = true;
+      blueStartTime = millis();
+      for (int i = 0; i < NUM_LEDS; i++) {
+        if (i != 15 && i != 0 && i != 1) {
+          leds.setPixelColor(i, 0, 0, 255);  // Stel LED-kleur in op blauw
+        }
+      }
+      leds.show();
+    }
+  }
+
+  // Controleer of de blauwe LED's moeten worden uitgeschakeld
+  if (blueOn && (millis() - blueStartTime >= blueDuration)) {
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds.setPixelColor(i, 0);  // Zet LED-kleur uit
+    }
+    leds.show();
+    blueOn = false;
+    ledOn = true;  // Reactiveren rotatie vanaf LED 2
+    currentLED = 2;
+    previousLED = NUM_LEDS - 1;
+    rotationDelay = 500;  // Verhoog rotatiesnelheid naar 500 ms (0,5 seconde)
+    if (currentLED == 0) currentLED = 2;  // Zorg ervoor dat currentLED altijd 2 is als het LED 1 bereikt
+  }
+
+  // Controleer of de regenboogkleuren moeten worden uitgeschakeld
+  if (greenOn && (millis() - rainbowStartTime >= rainbowDuration)) {
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds.setPixelColor(i, 0);  // Zet LED-kleur uit
+    }
+    leds.show();
+    greenOn = false;
+    ledOn = true;  // Reactiveren rotatie vanaf LED 2
+    currentLED = 2;
+    previousLED = NUM_LEDS - 1;
+    rotationDelay = 500;  // Verhoog rotatiesnelheid naar 500 ms (0,5 seconde)
+  }
+
+  // Draai de LED's als ledOn actief is en er geen groene/blauwe LED's actief zijn
+  if (ledOn && !greenOn && !blueOn) {
+    leds.setPixelColor(previousLED, 0);  // Zet vorige LED uit
+    leds.setPixelColor(currentLED, 255, 0, 0);  // Zet huidige LED aan (rood)
+    leds.show();
+
+    previousLED = currentLED;
+    currentLED = (currentLED + 1) % NUM_LEDS;
+
+    delay(rotationDelay);  // Pas vertraging aan voor gewenste rotatiesnelheid
+  }
+}
+
+// Hulpmethode voor het instellen van regenboogkleuren
+uint32_t Wheel(byte WheelPos) {
+  WheelPos = 255 - WheelPos;
+  if (WheelPos < 85) {
+    return leds.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  }
+  if (WheelPos < 170) {
+    WheelPos -= 85;
+    return leds.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+  WheelPos -= 170;
+  return leds.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+}
